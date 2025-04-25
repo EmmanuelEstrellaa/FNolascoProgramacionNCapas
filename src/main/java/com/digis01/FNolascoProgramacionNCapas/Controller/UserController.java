@@ -170,6 +170,7 @@ public class UserController {
         if (usuarioDireccion.Usuario.getIdUsuario() == 0) { //Agregar
             System.out.println("Estoy agregando un nuevo usuario y direccion");
             usuarioDAOImplementation.Add(usuarioDireccion);
+//            usuarioDAOImplementation.AddJPA(usuarioDireccion);
         } else {
             if (usuarioDireccion.Direccion.getIdDireccion() == -1) { //Editar usuario
                 usuarioDAOImplementation.UsuarioUpdate(usuarioDireccion.Usuario);

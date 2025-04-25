@@ -11,6 +11,7 @@ import com.digis01.FNolascoProgramacionNCapas.ML.Pais;
 import com.digis01.FNolascoProgramacionNCapas.ML.UsuarioDireccion;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
 import java.sql.ResultSet;
 import java.sql.Types;
 import java.util.ArrayList;
@@ -390,59 +391,113 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
     @Override
     public Result GetAllJPA() {
 
-            Result result = new Result();
-            try {
+        Result result = new Result();
+        try {
             TypedQuery<com.digis01.FNolascoProgramacionNCapas.JPA.Usuario> queryUsuarios = entityManager.createQuery("FROM Usuario", com.digis01.FNolascoProgramacionNCapas.JPA.Usuario.class);
             List<com.digis01.FNolascoProgramacionNCapas.JPA.Usuario> usuarios = queryUsuarios.getResultList();
-                
+
             result.objects = new ArrayList<>();
-                for (com.digis01.FNolascoProgramacionNCapas.JPA.Usuario usuario : usuarios) {
+            for (com.digis01.FNolascoProgramacionNCapas.JPA.Usuario usuario : usuarios) {
 
-                    UsuarioDireccion usuarioDireccion = new UsuarioDireccion();
-                    usuarioDireccion.Usuario = new Usuario();
-                    usuarioDireccion.Usuario.setIdUsuario(usuario.getIdUsuario());
-                    usuarioDireccion.Usuario.setUserName(usuario.getUserName());
-                    usuarioDireccion.Usuario.setNombre(usuario.getNombre());
-                    usuarioDireccion.Usuario.setApellidoPaterno(usuario.getApellidoPaterno());
-                    usuarioDireccion.Usuario.setEmail(usuario.getEmail());
-                    usuarioDireccion.Usuario.setSexo(usuario.getSexo());
-                    usuarioDireccion.Usuario.setTelefono(usuario.getTelefono());
-                    usuarioDireccion.Usuario.setCelular(usuario.getCelular());
-                    usuarioDireccion.Usuario.setCurp(usuario.getCurp());
-                    usuarioDireccion.Usuario.setApellidoMaterno(usuario.getApellidoMaterno());
-                    usuarioDireccion.Usuario.setPassword(usuario.getPassword());
-                    usuarioDireccion.Usuario.setFechaNacimiento(usuario.getFechaNacimiento());
-                    usuarioDireccion.Usuario.setImagen(usuario.getImagen());
-                    
-                                        
-                    TypedQuery<com.digis01.FNolascoProgramacionNCapas.JPA.Direccion> queryDireccion = entityManager.createQuery("FROM Direccion WHERE Usuario.IdUsuario = :idusuario", com.digis01.FNolascoProgramacionNCapas.JPA.Direccion.class);
-                    queryDireccion.setParameter("idusuario", usuario.getIdUsuario());
+                UsuarioDireccion usuarioDireccion = new UsuarioDireccion();
+                usuarioDireccion.Usuario = new Usuario();
+                usuarioDireccion.Usuario.setIdUsuario(usuario.getIdUsuario());
+                usuarioDireccion.Usuario.setUserName(usuario.getUserName());
+                usuarioDireccion.Usuario.setNombre(usuario.getNombre());
+                usuarioDireccion.Usuario.setApellidoPaterno(usuario.getApellidoPaterno());
+                usuarioDireccion.Usuario.setEmail(usuario.getEmail());
+                usuarioDireccion.Usuario.setSexo(usuario.getSexo());
+                usuarioDireccion.Usuario.setTelefono(usuario.getTelefono());
+                usuarioDireccion.Usuario.setCelular(usuario.getCelular());
+                usuarioDireccion.Usuario.setCurp(usuario.getCurp());
+                usuarioDireccion.Usuario.setApellidoMaterno(usuario.getApellidoMaterno());
+                usuarioDireccion.Usuario.setPassword(usuario.getPassword());
+                usuarioDireccion.Usuario.setFechaNacimiento(usuario.getFechaNacimiento());
+                usuarioDireccion.Usuario.setImagen(usuario.getImagen());
 
-                    List<com.digis01.FNolascoProgramacionNCapas.JPA.Direccion> direccionesJPA = queryDireccion.getResultList();
-                    usuarioDireccion.Direcciones = new ArrayList();
-                    for (com.digis01.FNolascoProgramacionNCapas.JPA.Direccion direccionJPA : direccionesJPA) {
-                        Direccion direccion = new Direccion();
-                        direccion.setCalle(direccionJPA.getCalle());
-                        direccion.setNumeroExterior(direccionJPA.getNumeroExterior());
-                        direccion.setNumeroInterior(direccionJPA.getNumeroInterior());
-                        direccion.Colonia = new Colonia();                    
-                        direccion.Colonia.setIdColonia(direccionJPA.Colonia.getIdColonia());
-                        direccion.Colonia.setNombre(direccionJPA.Colonia.getNombre());
+                TypedQuery<com.digis01.FNolascoProgramacionNCapas.JPA.Direccion> queryDireccion = entityManager.createQuery("FROM Direccion WHERE Usuario.IdUsuario = :idusuario", com.digis01.FNolascoProgramacionNCapas.JPA.Direccion.class);
+                queryDireccion.setParameter("idusuario", usuario.getIdUsuario());
 
-                        usuarioDireccion.Direcciones.add(direccion);
-                    }
+                List<com.digis01.FNolascoProgramacionNCapas.JPA.Direccion> direccionesJPA = queryDireccion.getResultList();
+                usuarioDireccion.Direcciones = new ArrayList();
+                for (com.digis01.FNolascoProgramacionNCapas.JPA.Direccion direccionJPA : direccionesJPA) {
+                    Direccion direccion = new Direccion();
+                    direccion.setCalle(direccionJPA.getCalle());
+                    direccion.setNumeroExterior(direccionJPA.getNumeroExterior());
+                    direccion.setNumeroInterior(direccionJPA.getNumeroInterior());
+                    direccion.Colonia = new Colonia();
+                    direccion.Colonia.setIdColonia(direccionJPA.Colonia.getIdColonia());
+                    direccion.Colonia.setNombre(direccionJPA.Colonia.getNombre());
 
-                    result.objects.add(usuarioDireccion);
-
+                    usuarioDireccion.Direcciones.add(direccion);
                 }
 
-                result.correct = true;
-            } catch (Exception ex) {
-                result.correct = false;
-                result.errorMessage = ex.getLocalizedMessage();
-                result.ex = ex;
-            }
-            return result;
+                result.objects.add(usuarioDireccion);
 
+            }
+
+            result.correct = true;
+        } catch (Exception ex) {
+            result.correct = false;
+            result.errorMessage = ex.getLocalizedMessage();
+            result.ex = ex;
         }
+        return result;
+
     }
+
+    @Transactional
+    @Override
+    public Result AddJPA(UsuarioDireccion usuarioDireccion) {
+        Result result = new Result();
+
+        try {
+            //llenado de usuarioJPA con el usuario ML
+            com.digis01.FNolascoProgramacionNCapas.JPA.Usuario usuarioJPA = new com.digis01.FNolascoProgramacionNCapas.JPA.Usuario();
+            usuarioJPA.setUserName(usuarioDireccion.Usuario.getUserName());
+            usuarioJPA.setNombre(usuarioDireccion.Usuario.getNombre());
+            usuarioJPA.setApellidoPaterno(usuarioDireccion.Usuario.getApellidoPaterno());
+            usuarioJPA.setEmail(usuarioDireccion.Usuario.getEmail());
+            usuarioJPA.setSexo(usuarioDireccion.Usuario.getSexo());
+            usuarioJPA.setTelefono(usuarioDireccion.Usuario.getTelefono());
+            usuarioJPA.setCelular(usuarioDireccion.Usuario.getCelular());
+            usuarioJPA.setCurp(usuarioDireccion.Usuario.getCurp());
+            usuarioJPA.setApellidoMaterno(usuarioDireccion.Usuario.getApellidoMaterno());
+            usuarioJPA.setPassword(usuarioDireccion.Usuario.getPassword());
+            usuarioJPA.setFechaNacimiento(usuarioDireccion.Usuario.getFechaNacimiento());
+            usuarioJPA.setImagen(usuarioDireccion.Usuario.getImagen());
+            
+            usuarioJPA.Roll = new com.digis01.FNolascoProgramacionNCapas.JPA.Roll();
+            usuarioJPA.Roll.setIdRoll(usuarioDireccion.Usuario.Roll.getIdRoll());
+
+            entityManager.persist(usuarioJPA);
+
+            /*inserción de dirección*/
+            com.digis01.FNolascoProgramacionNCapas.JPA.Direccion direccionJPA
+                    = new com.digis01.FNolascoProgramacionNCapas.JPA.Direccion();
+            direccionJPA.setCalle(usuarioDireccion.Direccion.getCalle());
+            direccionJPA.setNumeroExterior(usuarioDireccion.Direccion.getNumeroExterior());
+            direccionJPA.setNumeroInterior(usuarioDireccion.Direccion.getNumeroInterior());
+
+            direccionJPA.Colonia = new com.digis01.FNolascoProgramacionNCapas.JPA.Colonia();
+            direccionJPA.Colonia.setIdColonia(usuarioDireccion.Direccion.Colonia.getIdColonia());
+
+            direccionJPA.Usuario = usuarioJPA;
+
+            /*direccionJPA.Alumno = new com.digis01.DGarciaPorgramacionNCapasMarzo25.JPA.Alumno();
+            direccionJPA.Alumno.setIdAlumno(alumnoJPA.getIdAlumno());*/
+            entityManager.persist(direccionJPA);
+
+            System.out.println("");
+
+            result.correct = true;
+
+        } catch (Exception ex) {
+            result.correct = false;
+            result.errorMessage = ex.getLocalizedMessage();
+            result.ex = ex;
+        }
+
+        return result;
+    }
+}
