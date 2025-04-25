@@ -9,9 +9,12 @@ import com.digis01.FNolascoProgramacionNCapas.ML.Estado;
 import com.digis01.FNolascoProgramacionNCapas.ML.Municipio;
 import com.digis01.FNolascoProgramacionNCapas.ML.Pais;
 import com.digis01.FNolascoProgramacionNCapas.ML.UsuarioDireccion;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import java.sql.ResultSet;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.CallableStatementCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,6 +25,9 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private EntityManager entityManager;
 
     @Override
     public Result GetAll() {
@@ -254,7 +260,7 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
                     usuarioDireccion.Usuario.setApellidoMaterno(resultSet.getString("ApellidoMaterno"));
                     usuarioDireccion.Usuario.setPassword(resultSet.getString("Password"));
                     usuarioDireccion.Usuario.setFechaNacimiento(resultSet.getDate("FechaNacimiento"));
-                    usuarioDireccion.Usuario.setImagen(resultSet.getString("Imagen"));                    
+                    usuarioDireccion.Usuario.setImagen(resultSet.getString("Imagen"));
                     usuarioDireccion.Usuario.Roll = new Roll();
                     usuarioDireccion.Usuario.Roll.setIdRoll(resultSet.getInt("IdRoll"));
                     usuarioDireccion.Usuario.Roll.setNombre(resultSet.getString("NombreRoll"));
@@ -379,5 +385,18 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
 
         return result;
 
+    }
+
+    @Override
+    public Result GetAllJPA() {
+        try {
+            TypedQuery<com.digis01.FNolascoProgramacionNCapas.JPA.Usuario> queryUsuarios = entityManager.createQuery("FROM Usuario", com.digis01.FNolascoProgramacionNCapas.JPA.Usuario.class);
+            List<com.digis01.FNolascoProgramacionNCapas.JPA.Usuario> usuarios = queryUsuarios.getResultList();
+
+        } catch (Exception ex) {
+
+        } 
+            return null;
+        
     }
 }

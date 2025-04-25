@@ -78,6 +78,7 @@ public class UserController {
     public String Index(Model model) {
 
         Result result = usuarioDAOImplementation.GetAll();
+        usuarioDAOImplementation.GetAllJPA();
         Result resultRoll = RollDAOImplementation.GetAll();
 
         model.addAttribute("listaUsuarios", result.objects);
@@ -339,15 +340,6 @@ public class UserController {
                     usuarioDireccion.Usuario.setFechaNacimiento(fechaNacimiento);
                     usuarioDireccion.Usuario.Roll = new Roll();
                     usuarioDireccion.Usuario.Roll.setIdRoll((int) row.getCell(10).getNumericCellValue());
-//                    Cell cellRoll = row.getCell(10);
-//                    int idroll;
-//                    if (cell.getCellType() == CellType.NUMERIC) {                        
-//                        idroll = (int) cell.getNumericCellValue();
-//                    } else {
-//                        int introll = cell.toString();
-//                        
-//                    }
-                    //usuarioDireccion.Usuario.setFechaNacimiento(fechaNacimiento);
 //                    usuarioDireccion.Usuario.setStatus(row.getCell(3) != null ? (int) row.getCell(3).getNumericCellValue() : 0 );
                     usuarioDireccion.Direccion = new Direccion();
                     usuarioDireccion.Direccion.setCalle(row.getCell(11).toString());
@@ -356,7 +348,7 @@ public class UserController {
 
                     usuarioDireccion.Direccion.Colonia = new Colonia();
                     usuarioDireccion.Direccion.Colonia.setIdColonia((int) row.getCell(14).getNumericCellValue());
-                    //add muchacho 
+                    listaUsuarios.add(usuarioDireccion);
                 }
 
             }
