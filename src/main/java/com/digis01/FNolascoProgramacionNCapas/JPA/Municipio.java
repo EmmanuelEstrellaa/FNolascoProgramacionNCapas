@@ -22,7 +22,7 @@ public class Municipio {
     private String Nombre;
 
     @ManyToOne    
-    @JoinColumn(name = "estado")
+    @JoinColumn(name = "idestado")
     public Estado Estado;
 
     public int getIdMunicipio() {

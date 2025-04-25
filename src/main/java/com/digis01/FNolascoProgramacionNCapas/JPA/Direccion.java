@@ -26,8 +26,22 @@ public class Direccion {
     private String NumeroExterior;
 
     @ManyToOne
-    @JoinColumn(name = "colonia")
+    @JoinColumn(name = "idcolonia")
     public Colonia Colonia;
+    
+    @ManyToOne
+    @JoinColumn(name = "idusuario")
+    public Usuario Usuario;
+
+    public Usuario getUsuario() {
+        return Usuario;
+    }
+
+    public void setUsuario(Usuario Usuario) {
+        this.Usuario = Usuario;
+    }
+    
+    
 
     public int getIdDireccion() {
         return IdDireccion;

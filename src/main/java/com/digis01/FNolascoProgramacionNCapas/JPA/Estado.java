@@ -20,7 +20,7 @@ public class Estado {
     private String Nombre;
 
     @ManyToOne
-    @JoinColumn(name = "pais")
+    @JoinColumn(name = "idpais")
     public Pais Pais;
 
     public int getIdEstado() {

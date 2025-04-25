@@ -5,12 +5,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
+@Table(name = "Usuarios")
 public class Usuario {
 
     @Id
@@ -48,8 +51,8 @@ public class Usuario {
     @Column(name = "password")
     private String Password;
 
-    @Column(name = "roll")
     @ManyToOne
+    @JoinColumn(name = "idroll")
     public Roll Roll;
 
     @Column(name = "fechanacimiento")

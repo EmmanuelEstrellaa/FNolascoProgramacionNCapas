@@ -389,14 +389,60 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
 
     @Override
     public Result GetAllJPA() {
-        try {
+
+            Result result = new Result();
+            try {
             TypedQuery<com.digis01.FNolascoProgramacionNCapas.JPA.Usuario> queryUsuarios = entityManager.createQuery("FROM Usuario", com.digis01.FNolascoProgramacionNCapas.JPA.Usuario.class);
             List<com.digis01.FNolascoProgramacionNCapas.JPA.Usuario> usuarios = queryUsuarios.getResultList();
+                
+            result.objects = new ArrayList<>();
+                for (com.digis01.FNolascoProgramacionNCapas.JPA.Usuario usuario : usuarios) {
 
-        } catch (Exception ex) {
+                    UsuarioDireccion usuarioDireccion = new UsuarioDireccion();
+                    usuarioDireccion.Usuario = new Usuario();
+                    usuarioDireccion.Usuario.setIdUsuario(usuario.getIdUsuario());
+                    usuarioDireccion.Usuario.setUserName(usuario.getUserName());
+                    usuarioDireccion.Usuario.setNombre(usuario.getNombre());
+                    usuarioDireccion.Usuario.setApellidoPaterno(usuario.getApellidoPaterno());
+                    usuarioDireccion.Usuario.setEmail(usuario.getEmail());
+                    usuarioDireccion.Usuario.setSexo(usuario.getSexo());
+                    usuarioDireccion.Usuario.setTelefono(usuario.getTelefono());
+                    usuarioDireccion.Usuario.setCelular(usuario.getCelular());
+                    usuarioDireccion.Usuario.setCurp(usuario.getCurp());
+                    usuarioDireccion.Usuario.setApellidoMaterno(usuario.getApellidoMaterno());
+                    usuarioDireccion.Usuario.setPassword(usuario.getPassword());
+                    usuarioDireccion.Usuario.setFechaNacimiento(usuario.getFechaNacimiento());
+                    usuarioDireccion.Usuario.setImagen(usuario.getImagen());
+                    
+                                        
+                    TypedQuery<com.digis01.FNolascoProgramacionNCapas.JPA.Direccion> queryDireccion = entityManager.createQuery("FROM Direccion WHERE Usuario.IdUsuario = :idusuario", com.digis01.FNolascoProgramacionNCapas.JPA.Direccion.class);
+                    queryDireccion.setParameter("idusuario", usuario.getIdUsuario());
 
-        } 
-            return null;
-        
+                    List<com.digis01.FNolascoProgramacionNCapas.JPA.Direccion> direccionesJPA = queryDireccion.getResultList();
+                    usuarioDireccion.Direcciones = new ArrayList();
+                    for (com.digis01.FNolascoProgramacionNCapas.JPA.Direccion direccionJPA : direccionesJPA) {
+                        Direccion direccion = new Direccion();
+                        direccion.setCalle(direccionJPA.getCalle());
+                        direccion.setNumeroExterior(direccionJPA.getNumeroExterior());
+                        direccion.setNumeroInterior(direccionJPA.getNumeroInterior());
+                        direccion.Colonia = new Colonia();                    
+                        direccion.Colonia.setIdColonia(direccionJPA.Colonia.getIdColonia());
+                        direccion.Colonia.setNombre(direccionJPA.Colonia.getNombre());
+
+                        usuarioDireccion.Direcciones.add(direccion);
+                    }
+
+                    result.objects.add(usuarioDireccion);
+
+                }
+
+                result.correct = true;
+            } catch (Exception ex) {
+                result.correct = false;
+                result.errorMessage = ex.getLocalizedMessage();
+                result.ex = ex;
+            }
+            return result;
+
+        }
     }
-}

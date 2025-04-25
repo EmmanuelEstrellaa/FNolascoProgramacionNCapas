@@ -77,12 +77,13 @@ public class UserController {
     @GetMapping
     public String Index(Model model) {
 
-        Result result = usuarioDAOImplementation.GetAll();
-        usuarioDAOImplementation.GetAllJPA();
+//        Result result = usuarioDAOImplementation.GetAll();
+        Result resultJPA = usuarioDAOImplementation.GetAllJPA();
         Result resultRoll = RollDAOImplementation.GetAll();
 
-        model.addAttribute("listaUsuarios", result.objects);
+//        model.addAttribute("listaUsuarios", result.objects);
         model.addAttribute("rolls", resultRoll.object);
+        model.addAttribute("listaUsuarios", resultJPA.objects);
         return "UsuarioIndex";
     }
 
