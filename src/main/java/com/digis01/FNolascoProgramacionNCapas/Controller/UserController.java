@@ -176,7 +176,8 @@ public class UserController {
                 usuarioDAOImplementation.UsuarioUpdate(usuarioDireccion.Usuario);
                 System.out.println("Estoy actualizando un usuario");
             } else if (usuarioDireccion.Direccion.getIdDireccion() == 0) { //Agregar direccion
-                usuarioDAOImplementation.UsuarioADDdireccion(usuarioDireccion);
+//                usuarioDAOImplementation.UsuarioADDdireccion(usuarioDireccion);
+                usuarioDAOImplementation.AddDireccionJPA(usuarioDireccion);
                 System.out.println("Estoy agregando direccion");
             } else { //Editar direccion
                 //usuarioDAOImplementation.DireccionUpdate(usuarioDireccion);
