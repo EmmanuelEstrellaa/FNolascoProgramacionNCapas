@@ -637,4 +637,48 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
         return result;
     }
 
+    @Override
+    public Result DieccionUpdateJPA(Direccion direccion) {
+        Result result = new Result();
+        
+//        try {
+//
+//            com.digis01.FNolascoProgramacionNCapas.JPA.Direccion direccionJPA = new com.digis01.FNolascoProgramacionNCapas.JPA.Direccion();
+//            usuarioJPA = entityManager.find(com.digis01.FNolascoProgramacionNCapas.JPA.Usuario.class, usuario.getIdUsuario());
+//
+//            usuarioJPA.setIdUsuario(usuario.getIdUsuario());
+//            usuarioJPA.setUserName(usuario.getUserName());
+//            usuarioJPA.setNombre(usuario.getNombre());
+//            usuarioJPA.setApellidoPaterno(usuario.getApellidoPaterno());
+//            usuarioJPA.setEmail(usuario.getEmail());
+//            usuarioJPA.setSexo(usuario.getSexo());
+//            usuarioJPA.setTelefono(usuario.getTelefono());
+//            usuarioJPA.setCelular(usuario.getCelular());
+//            usuarioJPA.setCurp(usuario.getCurp());
+//            usuarioJPA.setApellidoMaterno(usuario.getApellidoMaterno());
+//            usuarioJPA.setPassword(usuario.getPassword());
+//            usuarioJPA.setFechaNacimiento(usuario.getFechaNacimiento());
+//            usuarioJPA.setImagen(usuario.getImagen());
+//            
+//            usuarioJPA.Roll = new com.digis01.FNolascoProgramacionNCapas.JPA.Roll();
+//            usuarioJPA.Roll.setIdRoll(usuario.Roll.getIdRoll());
+//           
+//
+//            //vaciar alumno ML a alumno JPA
+//            entityManager.merge(usuarioJPA);
+//
+//            System.out.println("");
+//
+//            result.correct = true;
+//
+//        } catch (Exception ex) {
+//            result.correct = false;
+//            result.errorMessage = ex.getLocalizedMessage();
+//            result.ex = ex;
+//        }
+
+
+        return result;
+    }
+
 }
