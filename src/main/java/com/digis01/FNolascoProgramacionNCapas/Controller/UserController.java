@@ -117,6 +117,12 @@ public class UserController {
             usuarioDAOImplementation.DireccionDeleteJPA(IdDireccion);
         return "redirect:/Usuario";
     }
+    
+    @GetMapping("DeleteUsuario/{IdUsuario}")
+    public String DeleteUsuario(@PathVariable int IdUsuario) {
+        Result result = usuarioDAOImplementation.DeleteUsuarioDireccionJPA(IdUsuario);
+        return "redirect:/Usuario";
+    }
 
     @GetMapping("/formEditable")
     public String FormEditable(Model model, @RequestParam int IdUsuario, @RequestParam(required = false) Integer IdDireccion) {

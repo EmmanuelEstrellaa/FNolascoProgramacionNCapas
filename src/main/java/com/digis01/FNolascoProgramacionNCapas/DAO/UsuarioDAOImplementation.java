@@ -693,8 +693,49 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
 
             com.digis01.FNolascoProgramacionNCapas.JPA.Direccion direccion = new com.digis01.FNolascoProgramacionNCapas.JPA.Direccion();
             direccion = entityManager.find(com.digis01.FNolascoProgramacionNCapas.JPA.Direccion.class, IdDireccion);
-            
+
             entityManager.remove(direccion);
+
+        } catch (Exception ex) {
+            result.correct = false;
+            result.errorMessage = ex.getLocalizedMessage();
+            result.ex = ex;
+        }
+
+        return result;
+    }
+
+    @Transactional
+    @Override
+    public Result DeleteUsuarioDireccionJPA(int IdUsuario) {
+        Result result = new Result();
+
+        try {
+          
+            com.digis01.FNolascoProgramacionNCapas.JPA.Usuario usuario = new com.digis01.FNolascoProgramacionNCapas.JPA.Usuario();
+            usuario = entityManager.find(com.digis01.FNolascoProgramacionNCapas.JPA.Usuario.class, IdUsuario);
+            
+            if(usuario != null){
+                TypedQuery<com.digis01.FNolascoProgramacionNCapas.JPA.Direccion> queryDirecciones = 
+                        entityManager.createQuery("FROM Direccion WHERE Usuario.IdUsuario = :IdUsuario", com.digis01.FNolascoProgramacionNCapas.JPA.Direccion.class);
+                queryDirecciones.setParameter("IdUsuario", IdUsuario);
+                
+                List<com.digis01.FNolascoProgramacionNCapas.JPA.Direccion> direcciones = queryDirecciones.getResultList();
+                
+                for(com.digis01.FNolascoProgramacionNCapas.JPA.Direccion direccion : direcciones){
+                    if(!entityManager.contains(direccion)){
+                        direccion = entityManager.merge(direccion);
+                    }
+                    entityManager.remove(direccion);
+                }
+                
+                if(!entityManager.contains(usuario)){
+                    usuario = entityManager.merge(usuario);
+                }
+                entityManager.remove(usuario);
+                
+                }
+            
 
         } catch (Exception ex) {
             result.correct = false;
