@@ -616,10 +616,9 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
             usuarioJPA.setPassword(usuario.getPassword());
             usuarioJPA.setFechaNacimiento(usuario.getFechaNacimiento());
             usuarioJPA.setImagen(usuario.getImagen());
-            
+
             usuarioJPA.Roll = new com.digis01.FNolascoProgramacionNCapas.JPA.Roll();
             usuarioJPA.Roll.setIdRoll(usuario.Roll.getIdRoll());
-           
 
             //vaciar alumno ML a alumno JPA
             entityManager.merge(usuarioJPA);
@@ -641,32 +640,31 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
     @Override
     public Result DieccionUpdateJPA(UsuarioDireccion usuarioDireccion) {
         Result result = new Result();
-        
+
         try {
 
             com.digis01.FNolascoProgramacionNCapas.JPA.Direccion direccionJPA = new com.digis01.FNolascoProgramacionNCapas.JPA.Direccion();
 //            direccionJPA = entityManager.find(com.digis01.FNolascoProgramacionNCapas.JPA.Direccion.class, direccion.getIdDireccion());
-            
+
             direccionJPA.setIdDireccion(usuarioDireccion.Direccion.getIdDireccion());
             direccionJPA.setCalle(usuarioDireccion.Direccion.getCalle());
             direccionJPA.setNumeroExterior(usuarioDireccion.Direccion.getNumeroExterior());
             direccionJPA.setNumeroInterior(usuarioDireccion.Direccion.getNumeroInterior());
-            
+
             direccionJPA.Colonia = new com.digis01.FNolascoProgramacionNCapas.JPA.Colonia();
             direccionJPA.Colonia.setIdColonia(usuarioDireccion.Direccion.Colonia.getIdColonia());
             direccionJPA.Colonia.setNombre(usuarioDireccion.Direccion.Colonia.getNombre());
             direccionJPA.Colonia.setCodigoPostal(usuarioDireccion.Direccion.Colonia.getCodigoPostal());
-            
+
             direccionJPA.Colonia.Municipio = new com.digis01.FNolascoProgramacionNCapas.JPA.Municipio();
             direccionJPA.Colonia.Municipio.setIdMunicipio(usuarioDireccion.Direccion.Colonia.Municipio.getIdMunicipio());
-            
+
             direccionJPA.Colonia.Municipio.Estado = new com.digis01.FNolascoProgramacionNCapas.JPA.Estado();
             direccionJPA.Colonia.Municipio.Estado.setIdEstado(usuarioDireccion.Direccion.Colonia.Municipio.Estado.getIdEstado());
-            
+
             direccionJPA.Colonia.Municipio.Estado.Pais = new com.digis01.FNolascoProgramacionNCapas.JPA.Pais();
             direccionJPA.Colonia.Municipio.Estado.Pais.setIdPais(usuarioDireccion.Direccion.Colonia.Municipio.Estado.Pais.getIdPais());
-            
-            
+
             direccionJPA.Usuario = new com.digis01.FNolascoProgramacionNCapas.JPA.Usuario();
             direccionJPA.Usuario.setIdUsuario(usuarioDireccion.Usuario.getIdUsuario());
 
@@ -683,6 +681,26 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
             result.ex = ex;
         }
 
+        return result;
+    }
+
+    @Transactional
+    @Override
+    public Result DireccionDeleteJPA(int IdDireccion) {
+        Result result = new Result();
+
+        try {
+
+            com.digis01.FNolascoProgramacionNCapas.JPA.Direccion direccion = new com.digis01.FNolascoProgramacionNCapas.JPA.Direccion();
+            direccion = entityManager.find(com.digis01.FNolascoProgramacionNCapas.JPA.Direccion.class, IdDireccion);
+            
+            entityManager.remove(direccion);
+
+        } catch (Exception ex) {
+            result.correct = false;
+            result.errorMessage = ex.getLocalizedMessage();
+            result.ex = ex;
+        }
 
         return result;
     }

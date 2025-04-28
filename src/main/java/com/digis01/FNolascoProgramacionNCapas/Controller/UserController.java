@@ -112,6 +112,12 @@ public class UserController {
 
     }
 
+    @GetMapping("Delete")
+    public String Delete(@RequestParam int IdDireccion) {
+            usuarioDAOImplementation.DireccionDeleteJPA(IdDireccion);
+        return "redirect:/Usuario";
+    }
+
     @GetMapping("/formEditable")
     public String FormEditable(Model model, @RequestParam int IdUsuario, @RequestParam(required = false) Integer IdDireccion) {
 
@@ -174,7 +180,7 @@ public class UserController {
         } else {
             if (usuarioDireccion.Direccion.getIdDireccion() == -1) { //Editar usuario
 //                usuarioDAOImplementation.UsuarioUpdate(usuarioDireccion.Usuario);
-                  usuarioDAOImplementation.UsuarioUpdateJPA(usuarioDireccion.Usuario);
+                usuarioDAOImplementation.UsuarioUpdateJPA(usuarioDireccion.Usuario);
                 System.out.println("Estoy actualizando un usuario");
             } else if (usuarioDireccion.Direccion.getIdDireccion() == 0) { //Agregar direccion
 //                usuarioDAOImplementation.UsuarioADDdireccion(usuarioDireccion);
