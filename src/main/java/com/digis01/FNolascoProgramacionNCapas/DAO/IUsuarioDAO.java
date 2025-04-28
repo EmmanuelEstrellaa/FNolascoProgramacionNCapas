@@ -20,5 +20,5 @@ public interface IUsuarioDAO {
     Result AddDireccionJPA(UsuarioDireccion usuarioDireccion);
     Result UsuaDirByIdJPA(int IdUsuario);
     Result UsuarioUpdateJPA(Usuario usuario);
-    Result DieccionUpdateJPA(Direccion direccion);
+    Result DieccionUpdateJPA(UsuarioDireccion usuarioDireccion);
 }

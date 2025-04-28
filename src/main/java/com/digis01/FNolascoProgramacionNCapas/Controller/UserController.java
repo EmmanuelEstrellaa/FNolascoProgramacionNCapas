@@ -182,6 +182,7 @@ public class UserController {
                 System.out.println("Estoy agregando direccion");
             } else { //Editar direccion
                 //usuarioDAOImplementation.DireccionUpdate(usuarioDireccion);
+                usuarioDAOImplementation.DieccionUpdateJPA(usuarioDireccion);
                 System.out.println("Estoy actualizando direccion");
             }
         }
