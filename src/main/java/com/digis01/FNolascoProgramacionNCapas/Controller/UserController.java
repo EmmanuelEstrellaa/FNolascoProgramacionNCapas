@@ -99,7 +99,8 @@ public class UserController {
             usuarioDIreccion.Direccion.Colonia.Municipio.Estado = new Estado();
             usuarioDIreccion.Direccion.Colonia.Municipio.Estado.Pais = new Pais();
 
-            model.addAttribute("rolls", RollDAOImplementation.GetAll().object);
+//            model.addAttribute("rolls", RollDAOImplementation.GetAll().object);
+            model.addAttribute("rolls", RollDAOImplementation.GetAllJPA().object);
             model.addAttribute("paises", PaisDAOImplementation.GetAll().correct ? PaisDAOImplementation.GetAll().objects : null);
             model.addAttribute("usuarioDireccion", usuarioDIreccion);
             return "UsuarioForm";

@@ -38,21 +38,28 @@
                 <th class="col-2"><center>Username</center></th>
                 <th class="col-2"><center>Contacto</center></th>
                 <th class="col-3"><center>Direcciones</center></th>
+                <th class="col-3"><center>Status</center></th>
                 <th class="col-1"><center>Eliminar</center></th>
                 </tr>
                 </thead>
                 <tbody>
                     <tr th:each="usuarioDirecciones : ${listaUsuarios}">
                         <td><a class="btn btn-light" th:href="@{/Usuario/Form/{IdUsuario}(IdUsuario = ${usuarioDirecciones.Usuario.IdUsuario})}"><i class="bi bi-pencil-square"></i> </a></td>
-                <td><img style="max-width: 75px" th:src="${usuarioDirecciones.Usuario.Imagen != null} ?
-                         'data:image/png;base64,' + ${usuarioDirecciones.Usuario.Imagen} :
-                         'https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png'" /></td>
-                <td th:text="|${usuarioDirecciones.Usuario.Nombre} ${usuarioDirecciones.Usuario.ApellidoPaterno} ${usuarioDirecciones.Usuario.ApellidoMaterno}|"></td>
-                <td th:text="${usuarioDirecciones.Usuario.UserName}"></td>
-                <td th:text="${usuarioDirecciones.Usuario.Telefono}"></td>
-                <td><ul><li th:each="direccion : ${usuarioDirecciones.Direcciones}" th:text="|${direccion.Calle} ${direccion.NumeroInterior} ${direccion.NumeroExterior}, ${direccion.Colonia.Nombre}|"></li></ul></td>
-                <td><a class="btn btn-light" th:href="@{/Usuario/DeleteUsuario/{IdUsuario}(IdUsuario = ${usuarioDirecciones.Usuario.IdUsuario})}"><i class="bi bi-trash3"></i> </a></td>
-                </tr>
+                        <td><img style="max-width: 75px" th:src="${usuarioDirecciones.Usuario.Imagen != null} ?
+                                 'data:image/png;base64,' + ${usuarioDirecciones.Usuario.Imagen} :
+                                 'https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png'" /></td>
+                        <td th:text="|${usuarioDirecciones.Usuario.Nombre} ${usuarioDirecciones.Usuario.ApellidoPaterno} ${usuarioDirecciones.Usuario.ApellidoMaterno}|"></td>
+                        <td th:text="${usuarioDirecciones.Usuario.UserName}"></td>
+                        <td th:text="${usuarioDirecciones.Usuario.Telefono}"></td>
+                        <td><ul><li th:each="direccion : ${usuarioDirecciones.Direcciones}" th:text="|${direccion.Calle} ${direccion.NumeroInterior} ${direccion.NumeroExterior}, ${direccion.Colonia.Nombre}|"></li></ul></td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+                                <label class="form-check-label" for="switchCheckDefault"> </label>
+                            </div>
+                        </td>
+                        <td><a class="btn btn-light" th:href="@{/Usuario/DeleteUsuario/{IdUsuario}(IdUsuario = ${usuarioDirecciones.Usuario.IdUsuario})}"><i class="bi bi-trash3"></i> </a></td>
+                    </tr>
                 </tbody>
             </table>
         </div>
