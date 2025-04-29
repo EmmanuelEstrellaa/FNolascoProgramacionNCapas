@@ -62,12 +62,11 @@ public class RollDAOImplementation implements IRollDAO {
             TypedQuery<com.digis01.FNolascoProgramacionNCapas.JPA.Roll> queryRoll = entityManager.createQuery("FROM Roll", com.digis01.FNolascoProgramacionNCapas.JPA.Roll.class);
             List<com.digis01.FNolascoProgramacionNCapas.JPA.Roll> rolles = queryRoll.getResultList();
 
-            result.objects = new ArrayList<>();
             for (com.digis01.FNolascoProgramacionNCapas.JPA.Roll roll : rolles) {
 
                 Roll rolls = new Roll();
 
-                rolls.setIdRoll(roll.getIdRoll());
+                rolls.setIdRoll(rolls.getIdRoll());
                 rolls.setNombre(rolls.getNombre());
 
                 result.object = rolles; //Object: Solo puede mostrar muestra 1 objeto

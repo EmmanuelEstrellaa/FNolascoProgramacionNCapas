@@ -79,10 +79,11 @@ public class UserController {
 
 //        Result result = usuarioDAOImplementation.GetAll();
         Result resultJPA = usuarioDAOImplementation.GetAllJPA();
-        Result resultRoll = RollDAOImplementation.GetAll();
+        Result resultRollJPA = RollDAOImplementation.GetAllJPA();
+//        Result resultRoll = RollDAOImplementation.GetAll();
 
 //        model.addAttribute("listaUsuarios", result.objects);
-        model.addAttribute("rolls", resultRoll.object);
+        model.addAttribute("rolls", resultRollJPA.object);
         model.addAttribute("listaUsuarios", resultJPA.objects);
         return "UsuarioIndex";
     }
@@ -101,7 +102,8 @@ public class UserController {
 
 //            model.addAttribute("rolls", RollDAOImplementation.GetAll().object);
             model.addAttribute("rolls", RollDAOImplementation.GetAllJPA().object);
-            model.addAttribute("paises", PaisDAOImplementation.GetAll().correct ? PaisDAOImplementation.GetAll().objects : null);
+//            model.addAttribute("paises", PaisDAOImplementation.GetAll().correct ? PaisDAOImplementation.GetAll().objects : null);
+            model.addAttribute("paises", PaisDAOImplementation.GetAllJPA().correct ? PaisDAOImplementation.GetAllJPA().object : null);
             model.addAttribute("usuarioDireccion", usuarioDIreccion);
             return "UsuarioForm";
         } else { // Editar
@@ -134,7 +136,8 @@ public class UserController {
             usuarioDireccion.Direccion = new Direccion();
             usuarioDireccion.Direccion.setIdDireccion(-1);
             model.addAttribute("usuarioDireccion", usuarioDireccion);
-            model.addAttribute("rolls", RollDAOImplementation.GetAll().object);
+//            model.addAttribute("rolls", RollDAOImplementation.GetAll().object);
+            model.addAttribute("rolls", RollDAOImplementation.GetAllJPA().object);
         } else if (IdDireccion == 0) { //Agregar dirección
             UsuarioDireccion usuarioDireccion = new UsuarioDireccion();
             usuarioDireccion.Usuario = new Usuario();
@@ -142,7 +145,8 @@ public class UserController {
             usuarioDireccion.Direccion = new Direccion();
             usuarioDireccion.Direccion.setIdDireccion(0);
             model.addAttribute("usuarioDireccion", usuarioDireccion);
-            model.addAttribute("paises", PaisDAOImplementation.GetAll().correct ? PaisDAOImplementation.GetAll().objects : null);
+//            model.addAttribute("paises", PaisDAOImplementation.GetAll().correct ? PaisDAOImplementation.GetAll().objects : null);
+            model.addAttribute("paises", PaisDAOImplementation.GetAllJPA().correct ? PaisDAOImplementation.GetAllJPA().object : null);
         } else { //Editar dirección
             UsuarioDireccion usuarioDireccion = new UsuarioDireccion();
             usuarioDireccion.Usuario = new Usuario();
@@ -151,7 +155,8 @@ public class UserController {
             usuarioDireccion.Direccion.setIdDireccion(IdDireccion);
             usuarioDireccion.Direccion = (Direccion) DireccionDAOImplementation.DireccionById(IdDireccion).object;
             model.addAttribute("usuarioDireccion", usuarioDireccion);
-            model.addAttribute("paises", PaisDAOImplementation.GetAll().correct ? PaisDAOImplementation.GetAll().objects : null);
+//            model.addAttribute("paises", PaisDAOImplementation.GetAll().correct ? PaisDAOImplementation.GetAll().objects : null);
+            model.addAttribute("paises", PaisDAOImplementation.GetAllJPA().correct ? PaisDAOImplementation.GetAllJPA().object : null);
             model.addAttribute("estados", EstadoDAOImplementation.EstadoByIdPais(IdDireccion));
             model.addAttribute("municipios", MunicipioDAOImplementation.MunicipioByIdEstado(IdDireccion));
             model.addAttribute("colonia", ColoniaDAOImplementation.ColoniaByIdMunicipio(IdDireccion));
