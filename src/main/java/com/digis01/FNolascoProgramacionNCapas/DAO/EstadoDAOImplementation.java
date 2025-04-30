@@ -66,8 +66,8 @@ public class EstadoDAOImplementation implements IEstadoDAO {
         Result result = new Result();
 
         try {
-            TypedQuery<com.digis01.FNolascoProgramacionNCapas.JPA.Estado> queryEstado = entityManager.createQuery("FROM Estado WHERE Pais.IdPais = :idpais", com.digis01.FNolascoProgramacionNCapas.JPA.Estado.class);
-            queryEstado.setParameter("idpais");
+            TypedQuery<com.digis01.FNolascoProgramacionNCapas.JPA.Estado> queryEstado = entityManager.createQuery("FROM Estado e WHERE e.pais.idPais = :idpais", com.digis01.FNolascoProgramacionNCapas.JPA.Estado.class);
+            queryEstado.setParameter("pais", IdPais);
             
             List<com.digis01.FNolascoProgramacionNCapas.JPA.Estado> estados = queryEstado.getResultList();
 
