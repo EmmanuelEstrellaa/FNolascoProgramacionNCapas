@@ -19,6 +19,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.CallableStatementCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -453,6 +454,7 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
 
         try {
             //llenado de usuarioJPA con el usuario ML
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             com.digis01.FNolascoProgramacionNCapas.JPA.Usuario usuarioJPA = new com.digis01.FNolascoProgramacionNCapas.JPA.Usuario();
             usuarioJPA.setUserName(usuarioDireccion.Usuario.getUserName());
             usuarioJPA.setNombre(usuarioDireccion.Usuario.getNombre());
@@ -463,7 +465,7 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
             usuarioJPA.setCelular(usuarioDireccion.Usuario.getCelular());
             usuarioJPA.setCurp(usuarioDireccion.Usuario.getCurp());
             usuarioJPA.setApellidoMaterno(usuarioDireccion.Usuario.getApellidoMaterno());
-            usuarioJPA.setPassword(usuarioDireccion.Usuario.getPassword());
+            usuarioJPA.setPassword(passwordEncoder.encode(usuarioDireccion.Usuario.getPassword()));
             usuarioJPA.setFechaNacimiento(usuarioDireccion.Usuario.getFechaNacimiento());
             usuarioJPA.setImagen(usuarioDireccion.Usuario.getImagen());
 
@@ -711,31 +713,30 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
         Result result = new Result();
 
         try {
-          
+
             com.digis01.FNolascoProgramacionNCapas.JPA.Usuario usuario = new com.digis01.FNolascoProgramacionNCapas.JPA.Usuario();
             usuario = entityManager.find(com.digis01.FNolascoProgramacionNCapas.JPA.Usuario.class, IdUsuario);
-            
-            if(usuario != null){
-                TypedQuery<com.digis01.FNolascoProgramacionNCapas.JPA.Direccion> queryDirecciones = 
-                        entityManager.createQuery("FROM Direccion WHERE Usuario.IdUsuario = :IdUsuario", com.digis01.FNolascoProgramacionNCapas.JPA.Direccion.class);
+
+            if (usuario != null) {
+                TypedQuery<com.digis01.FNolascoProgramacionNCapas.JPA.Direccion> queryDirecciones
+                        = entityManager.createQuery("FROM Direccion WHERE Usuario.IdUsuario = :IdUsuario", com.digis01.FNolascoProgramacionNCapas.JPA.Direccion.class);
                 queryDirecciones.setParameter("IdUsuario", IdUsuario);
-                
+
                 List<com.digis01.FNolascoProgramacionNCapas.JPA.Direccion> direcciones = queryDirecciones.getResultList();
-                
-                for(com.digis01.FNolascoProgramacionNCapas.JPA.Direccion direccion : direcciones){
-                    if(!entityManager.contains(direccion)){
+
+                for (com.digis01.FNolascoProgramacionNCapas.JPA.Direccion direccion : direcciones) {
+                    if (!entityManager.contains(direccion)) {
                         direccion = entityManager.merge(direccion);
                     }
                     entityManager.remove(direccion);
                 }
-                
-                if(!entityManager.contains(usuario)){
+
+                if (!entityManager.contains(usuario)) {
                     usuario = entityManager.merge(usuario);
                 }
                 entityManager.remove(usuario);
-                
-                }
-            
+
+            }
 
         } catch (Exception ex) {
             result.correct = false;
