@@ -602,6 +602,8 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
 
         try {
 
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
             com.digis01.FNolascoProgramacionNCapas.JPA.Usuario usuarioJPA = new com.digis01.FNolascoProgramacionNCapas.JPA.Usuario();
             usuarioJPA = entityManager.find(com.digis01.FNolascoProgramacionNCapas.JPA.Usuario.class, usuario.getIdUsuario());
 
@@ -615,7 +617,7 @@ public class UsuarioDAOImplementation implements IUsuarioDAO {
             usuarioJPA.setCelular(usuario.getCelular());
             usuarioJPA.setCurp(usuario.getCurp());
             usuarioJPA.setApellidoMaterno(usuario.getApellidoMaterno());
-            usuarioJPA.setPassword(usuario.getPassword());
+            usuarioJPA.setPassword(passwordEncoder.encode(usuario.getPassword()));
             usuarioJPA.setFechaNacimiento(usuario.getFechaNacimiento());
             usuarioJPA.setImagen(usuario.getImagen());
 

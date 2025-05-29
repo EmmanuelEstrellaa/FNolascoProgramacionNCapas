@@ -26,35 +26,33 @@ public class SpringSecurityConfig {
     public SecurityFilterChain securityfilterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests(
-        configure -> configure
-                .requestMatchers("/Usuario", "/Usuario/CargaMasiva").hasAnyAuthority("Supervisor", "Jefe")
-                .requestMatchers(HttpMethod.GET, "/Usuario/**").hasAnyAuthority("Jefe de empleados", "Jefe")
-                .requestMatchers("/Usuario/**").hasAuthority("Jefe")
-                .anyRequest().authenticated())
+                configure -> configure
+                        .requestMatchers("/Usuario").hasAnyAuthority("Jefe", "Supervisor", "Jefe de empleados")
+                        .requestMatchers("/Usuario", "/Usuario/CargaMasiva").hasAnyAuthority("Supervisor", "Jefe")
+                        .requestMatchers(HttpMethod.GET, "/Usuario/**").hasAnyAuthority("Jefe de empleados", "Jefe")
+                        .requestMatchers("/Usuario/**").hasAuthority("Jefe")
+                        .requestMatchers("/Usuario/formEditable").hasAuthority("Jefe")
+                        .anyRequest().authenticated())
                 .formLogin(login -> login.permitAll().defaultSuccessUrl("/Usuario"));
 
         return http.build();
     }
-    
-    
+
     @Bean
-    public UserDetailsService jdbcDetailService(DataSource dataSource){
-        
+    public UserDetailsService jdbcDetailService(DataSource dataSource) {
+
         JdbcUserDetailsManager jdbcUserDetailManager = new JdbcUserDetailsManager(dataSource);
-        
+
         jdbcUserDetailManager.setUsersByUsernameQuery("SELECT Username, Password, Enable from Usuarios WHERE Username = ?");
-        
+
         jdbcUserDetailManager.setAuthoritiesByUsernameQuery("SELECT Username, NombreRoll FROM RolManager WHERE Username = ?");
-        
-                
+
         return jdbcUserDetailManager;
     }
-    
+
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    
-    
 
 }
