@@ -9,7 +9,9 @@ import com.digis01.FNolascoProgramacionNCapas.ML.Usuario;
 import com.digis01.FNolascoProgramacionNCapas.ML.UsuarioDireccion;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -162,6 +164,13 @@ public class MockitoTest {
 
         TypedQuery<com.digis01.FNolascoProgramacionNCapas.JPA.Direccion> queryDirecciones = Mockito.mock(TypedQuery.class);
         Mockito.when(entityManager.createQuery("FROM Direccion WHERE Usuario.IdUsuario = :IdUsuario", com.digis01.FNolascoProgramacionNCapas.JPA.Direccion.class)).thenReturn(queryDirecciones);
+        queryDirecciones.setParameter("IdUsuario", usuario.getIdUsuario());
+
+        List<com.digis01.FNolascoProgramacionNCapas.JPA.Direccion> direcciones = queryDirecciones.getResultList();
+
+//        Mockito.when(entityManager.find(Mockito.eq(com.digis01.FNolascoProgramacionNCapas.JPA.Direccion.class),
+//                Mockito.eq()
+//        )).thenReturn();
 
     }
 
