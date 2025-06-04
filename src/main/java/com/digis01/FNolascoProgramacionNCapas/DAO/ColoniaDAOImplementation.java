@@ -47,6 +47,7 @@ public class ColoniaDAOImplementation implements IColoniaDAO{
                     result.objects.add(colonia);
                 }
                 
+                result.correct = true;
                 return 1;
             });
 
@@ -81,17 +82,18 @@ public class ColoniaDAOImplementation implements IColoniaDAO{
                     
                     colonia.setIdColonia(resultSet.getInt("IdColonia"));
                     colonia.setNombre(resultSet.getString("Nombre"));
-                    colonia.Municipio.setIdMunicipio(resultSet.getInt("IdMunicipio"));
+                    
 
         
                     
                     result.objects.add(colonia);
                 }
+                result.correct = true;
                 
                 return 1;
             });
 
-            result.correct = true;
+            
         } catch (Exception ex) {
             result.correct = false;
             result.errorMessage = ex.getLocalizedMessage();

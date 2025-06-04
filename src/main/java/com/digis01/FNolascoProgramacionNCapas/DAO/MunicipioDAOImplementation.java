@@ -43,11 +43,11 @@ public class MunicipioDAOImplementation implements IMunicipioDAO{
                     
                     result.objects.add(municipio);
                 }
-                
+                result.correct = true;
                 return 1;
             });
 
-            result.correct = true;
+            
         } catch (Exception ex) {
             result.correct = false;
             result.errorMessage = ex.getLocalizedMessage();

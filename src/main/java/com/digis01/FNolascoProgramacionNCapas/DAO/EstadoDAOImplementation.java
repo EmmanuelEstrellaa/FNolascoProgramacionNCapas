@@ -19,7 +19,7 @@ public class EstadoDAOImplementation implements IEstadoDAO {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    
+
     @Autowired
     private EntityManager entityManager;
 
@@ -47,11 +47,11 @@ public class EstadoDAOImplementation implements IEstadoDAO {
 
                     result.objects.add(estado);
                 }
+                result.correct = true;
 
                 return 1;
             });
 
-            result.correct = true;
         } catch (Exception ex) {
             result.correct = false;
             result.errorMessage = ex.getLocalizedMessage();
@@ -68,7 +68,7 @@ public class EstadoDAOImplementation implements IEstadoDAO {
         try {
             TypedQuery<com.digis01.FNolascoProgramacionNCapas.JPA.Estado> queryEstado = entityManager.createQuery("FROM Estado e WHERE e.pais.idPais = :idpais", com.digis01.FNolascoProgramacionNCapas.JPA.Estado.class);
             queryEstado.setParameter("pais", IdPais);
-            
+
             List<com.digis01.FNolascoProgramacionNCapas.JPA.Estado> estados = queryEstado.getResultList();
 
             for (com.digis01.FNolascoProgramacionNCapas.JPA.Estado estado : estados) {

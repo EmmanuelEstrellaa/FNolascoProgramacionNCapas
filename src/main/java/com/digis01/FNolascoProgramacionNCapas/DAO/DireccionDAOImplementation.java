@@ -58,11 +58,13 @@ public class DireccionDAOImplementation implements IDireccionDAO {
                             direccion.Colonia.Municipio.Estado.Pais.setNombre(resultSet.getString("NombrePais"));
 
                             result.object = direccion;
+                            
                         }
+                        result.correct = true;
 
                         return 1;
                     });
-            result.correct = true;
+            
         } catch (Exception ex) {
             result.correct = false;
             result.errorMessage = ex.getLocalizedMessage();
