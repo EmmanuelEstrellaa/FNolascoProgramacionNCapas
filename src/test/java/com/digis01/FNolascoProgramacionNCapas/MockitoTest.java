@@ -1,5 +1,9 @@
 package com.digis01.FNolascoProgramacionNCapas;
 
+import com.digis01.FNolascoProgramacionNCapas.DAO.ColoniaDAOImplementation;
+import com.digis01.FNolascoProgramacionNCapas.DAO.MunicipioDAOImplementation;
+import com.digis01.FNolascoProgramacionNCapas.DAO.PaisDAOImplementation;
+import com.digis01.FNolascoProgramacionNCapas.DAO.RollDAOImplementation;
 import com.digis01.FNolascoProgramacionNCapas.DAO.UsuarioDAOImplementation;
 import com.digis01.FNolascoProgramacionNCapas.ML.Colonia;
 import com.digis01.FNolascoProgramacionNCapas.ML.Direccion;
@@ -27,6 +31,12 @@ public class MockitoTest {
 
     @InjectMocks
     UsuarioDAOImplementation usuarioDAOImplementation;
+
+    @InjectMocks
+    RollDAOImplementation rollDAOImplementation;
+
+    @InjectMocks
+    PaisDAOImplementation paisDAOImplementation;
 
     @Test
     public void ADDUsuarioMockito() {
@@ -169,9 +179,8 @@ public class MockitoTest {
         List<com.digis01.FNolascoProgramacionNCapas.JPA.Direccion> direcciones = queryDirecciones.getResultList();
 
 //        Mockito.when(entityManager.find(Mockito.eq(com.digis01.FNolascoProgramacionNCapas.JPA.Direccion.class),
-//                Mockito.eq()
+//                Mockito.eq(usuario.getIdUsuario())
 //        )).thenReturn();
-
     }
 
     @Test
@@ -201,11 +210,110 @@ public class MockitoTest {
     @Test
     public void GetAllMockito() {
 
-//        TypedQuery
-//        
-//        Mockito.when(entityManager.createQuery(
-//                "From Usuario", com.digis01.FNolascoProgramacionNCapas.JPA.Usuario.class))
-//                .thenReturn(queryUsuarios);
-//        
+        com.digis01.FNolascoProgramacionNCapas.JPA.Usuario usuarioJPA = new com.digis01.FNolascoProgramacionNCapas.JPA.Usuario();
+        usuarioJPA.setIdUsuario(1);
+        usuarioJPA.setNombre("Emmanuel");
+        usuarioJPA.setApellidoPaterno("Nolasco");
+
+        usuarioJPA.Roll = new com.digis01.FNolascoProgramacionNCapas.JPA.Roll();
+        usuarioJPA.Roll.setIdRoll(1);
+
+        com.digis01.FNolascoProgramacionNCapas.JPA.Direccion direccionJPA = new com.digis01.FNolascoProgramacionNCapas.JPA.Direccion();
+        direccionJPA.setIdDireccion(1);
+        direccionJPA.setCalle("Santa Maria Rayon");
+
+        direccionJPA.Colonia = new com.digis01.FNolascoProgramacionNCapas.JPA.Colonia();
+        direccionJPA.Colonia.setIdColonia(1);
+
+        TypedQuery<com.digis01.FNolascoProgramacionNCapas.JPA.Usuario> queryUsuario = Mockito.mock(TypedQuery.class);
+        Mockito.when(entityManager.createQuery("FROM Usuario", com.digis01.FNolascoProgramacionNCapas.JPA.Usuario.class)).thenReturn(queryUsuario);
+
+        TypedQuery<com.digis01.FNolascoProgramacionNCapas.JPA.Direccion> queryDireccion = Mockito.mock(TypedQuery.class);
+        Mockito.when(entityManager.createQuery("FROM Direccion WHERE Usuario.IdUsuario = :idusuario", com.digis01.FNolascoProgramacionNCapas.JPA.Direccion.class)).thenReturn(queryDireccion);
+
+        List<com.digis01.FNolascoProgramacionNCapas.JPA.Usuario> usuarios = new ArrayList<>();
+        usuarios.add(usuarioJPA);
+        Mockito.when(queryUsuario.getResultList()).thenReturn(usuarios);
+
+        List<com.digis01.FNolascoProgramacionNCapas.JPA.Direccion> direcciones = new ArrayList<>();
+        direcciones.add(direccionJPA);
+        Mockito.when(queryDireccion.getResultList()).thenReturn(direcciones);
+
+        Result result = usuarioDAOImplementation.GetAllJPA();
+
+        Assertions.assertTrue(result.correct);
+        Assertions.assertNull(result.ex, "La excepción viene nula");
+        Assertions.assertNull(result.errorMessage, "Viene nulo");
+
+        Mockito.verify(entityManager,
+                Mockito.times(1)).createQuery("FROM Usuario", com.digis01.FNolascoProgramacionNCapas.JPA.Usuario.class);
+        Mockito.verify(entityManager,
+                Mockito.times(1)).createQuery("FROM Direccion WHERE Usuario.IdUsuario = :idusuario", com.digis01.FNolascoProgramacionNCapas.JPA.Direccion.class);
+        Mockito.verify(queryUsuario,
+                Mockito.times(1)).getResultList();
+        Mockito.verify(queryDireccion,
+                Mockito.times(1)).getResultList();
     }
+
+    @Test
+    public void UserGetbyId() {
+
+    }
+
+    @Test
+    public void GetAllRoll() {
+        com.digis01.FNolascoProgramacionNCapas.JPA.Roll roll = new com.digis01.FNolascoProgramacionNCapas.JPA.Roll();
+        roll.setIdRoll(1);
+        roll.setNombre("Jefe");
+
+        TypedQuery<com.digis01.FNolascoProgramacionNCapas.JPA.Roll> queryRoll = Mockito.mock(TypedQuery.class);
+        Mockito.when(entityManager.createQuery("FROM Roll", com.digis01.FNolascoProgramacionNCapas.JPA.Roll.class)).thenReturn(queryRoll);
+
+        List<com.digis01.FNolascoProgramacionNCapas.JPA.Roll> rolles = new ArrayList<>();
+        rolles.add(roll);
+        Mockito.when(queryRoll.getResultList()).thenReturn(rolles);
+
+//        Mockito.when(queryRoll.getResultList()).thenReturn(rolles);
+        Result result = rollDAOImplementation.GetAllJPA();
+
+        Assertions.assertNotNull(result, "el objeto de result viene null");
+        Assertions.assertNull(result.ex, "Viene una excepcion");
+        Assertions.assertNull(result.errorMessage, "Hay un error de msj");
+
+        Assertions.assertTrue(result.correct, "El result.correct es false");
+
+        Mockito.verify(entityManager,
+                Mockito.times(1)).createQuery("FROM Roll", com.digis01.FNolascoProgramacionNCapas.JPA.Roll.class);
+
+        Mockito.verify(queryRoll, Mockito.times(1)).getResultList();
+    }
+
+    @Test
+    public void GetAllPais() {
+        com.digis01.FNolascoProgramacionNCapas.JPA.Pais pais = new com.digis01.FNolascoProgramacionNCapas.JPA.Pais();
+        pais.setIdPais(1);
+        pais.setNombre("Mexico");
+
+        TypedQuery<com.digis01.FNolascoProgramacionNCapas.JPA.Pais> queryPais = Mockito.mock(TypedQuery.class);
+        Mockito.when(entityManager.createQuery("FROM Pais", com.digis01.FNolascoProgramacionNCapas.JPA.Pais.class)).thenReturn(queryPais);
+
+        List<com.digis01.FNolascoProgramacionNCapas.JPA.Pais> paises = new ArrayList<>();
+        paises.add(pais);
+        Mockito.when(queryPais.getResultList()).thenReturn(paises);
+
+        Result result = paisDAOImplementation.GetAllJPA();
+
+        Assertions.assertNotNull(result, "El objeto de result viene null");
+        Assertions.assertNull(result.ex, "Hay una excepcion");
+        Assertions.assertNull(result.errorMessage, "Hay un msj de error");
+
+        Assertions.assertTrue(result.correct, "El result.correct viene null");
+        
+        Mockito.verify(entityManager,
+                Mockito.times(1)).createQuery("FROM Pais", com.digis01.FNolascoProgramacionNCapas.JPA.Pais.class);
+        
+        Mockito.verify(queryPais, Mockito.times(1)).getResultList();
+
+    }
+
 }

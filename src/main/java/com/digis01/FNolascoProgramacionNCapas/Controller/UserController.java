@@ -17,6 +17,8 @@ import com.digis01.FNolascoProgramacionNCapas.ML.ResultFile;
 import com.digis01.FNolascoProgramacionNCapas.ML.Roll;
 import com.digis01.FNolascoProgramacionNCapas.ML.Usuario;
 import com.digis01.FNolascoProgramacionNCapas.ML.UsuarioDireccion;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import java.io.BufferedReader;
@@ -36,6 +38,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -51,6 +55,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping("/Usuario")
 public class UserController {
+
+    SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
 
     @Autowired
     private UsuarioDAOImplementation usuarioDAOImplementation;
@@ -117,10 +123,10 @@ public class UserController {
 
     @GetMapping("Delete")
     public String Delete(@RequestParam int IdDireccion) {
-            usuarioDAOImplementation.DireccionDeleteJPA(IdDireccion);
+        usuarioDAOImplementation.DireccionDeleteJPA(IdDireccion);
         return "redirect:/Usuario";
     }
-    
+
     @GetMapping("DeleteUsuario/{IdUsuario}")
     public String DeleteUsuario(@PathVariable int IdUsuario) {
         Result result = usuarioDAOImplementation.DeleteUsuarioDireccionJPA(IdUsuario);
@@ -411,9 +417,22 @@ public class UserController {
 
     @PostMapping("CargaMasiva/procesar")
     public String Procesar(@RequestParam MultipartFile archivo, Model model, HttpSession session) {
-        
-        
+
         return "/CargaMasiva";
     }
 
+    @GetMapping("/UserLogin")
+    public String login() {
+        return "UserLogin";
+    }
+
+    @GetMapping("/Error")
+    public String ErrorLogin() {
+        return "ErrorLogin";
+    }
+
+    @GetMapping("/Logout")
+    public String Logout() {
+        return "Logout";
+    }
 }
